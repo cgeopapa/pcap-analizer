@@ -1,1 +1,22 @@
-<p>dns-table works!</p>
+<div class="card">
+    <h2 class="m-2">DNS</h2>
+    <p-table [value]="dns" styleClass="p-datatable-striped" responsiveLayout="scroll"
+        [scrollable]="true" scrollHeight="calc(100vh - 110px)"
+        [paginator]="true" [rows]="rows" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="domain">Domain<p-sortIcon field="domain"></p-sortIcon></th>
+                <th pSortableColumn="visited">Visited<p-sortIcon field="visited"></p-sortIcon></th>
+                <th pSortableColumn="subdomainCount">Subdomain Count<p-sortIcon field="subdomainCount"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-d>
+            <tr>
+                <td>{{d.subdomainCount}}</td>
+                <td>{{d.visited}}</td>
+                <td>{{d.subdomainCount}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

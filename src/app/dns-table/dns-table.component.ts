@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { DnsDaoService } from '../dns-dao.service';
+import { DNS } from '../model/Dns';
+import { Values } from '../model/Values';
 
 @Component({
   selector: 'app-dns-table',
@@ -6,10 +9,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dns-table.component.scss']
 })
 export class DnsTableComponent implements OnInit {
+  dns: DNS[] = [];
+  rows = Values.rows;
 
-  constructor() { }
+  constructor(
+    private dao: DnsDaoService
+  ) { }
 
   ngOnInit(): void {
+    this.dao.get().subscribe((d: any) => {
+      this.dns = d;
+    })
   }
 
 }

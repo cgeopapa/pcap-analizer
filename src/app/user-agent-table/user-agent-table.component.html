@@ -1,1 +1,20 @@
-<p>user-agent-table works!</p>
+<div class="card">
+    <h2 class="m-2">User Agents</h2>
+    <p-table [value]="uagent" styleClass="p-datatable-striped" responsiveLayout="scroll"
+        [scrollable]="true" scrollHeight="calc(100vh - 110px)"
+        [paginator]="true" [rows]="rows" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="userAgent">User Agent<p-sortIcon field="userAgent"></p-sortIcon></th>
+                <th pSortableColumn="seen">Seen<p-sortIcon field="seen"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-u>
+            <tr>
+                <td>{{u.userAgent}}</td>
+                <td>{{u.seen}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

@@ -1,14 +1,18 @@
 <div class="grid grid-nogutter surface-0">
-    <div class="col-4 h-screen">
-        <div class="m-4">
-            <h1>P.S. Hunter - DI.KYB.</h1>
-            <sub>Threat Hunting Intelligence</sub>
+    <div class="col-4 h-screen flex flex-column justify-content-between">
+        <div>
+            <div class="m-4">
+                <h1>P.S. Hunter - DI.KYB.</h1>
+                <sub>Threat Hunting Intelligence</sub>
+            </div>
+            <div class="mb-2">
+                <p-panelMenu [model]="menuItems"></p-panelMenu>
+            </div>
         </div>
-        <div class="mb-2">
-            <p-panelMenu [model]="menuItems"></p-panelMenu>
+        <div>
+            <p-fileUpload url="http://192.168.105.105/chd" [multiple]="false"
+            [showCancelButton]="false"></p-fileUpload>
         </div>
-        <p-fileUpload url="http://192.168.105.105/chd" [multiple]="false"
-        [showCancelButton]="false"></p-fileUpload>
     </div>
     <div class="col-8" [ngSwitch]="display">
         <app-beacon-table *ngSwitchCase="0"></app-beacon-table>

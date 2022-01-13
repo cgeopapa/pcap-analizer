@@ -19,7 +19,7 @@ export class LongconDaoService {
       map((resp: any) => {
         const beacons: LongConnection[] = [];
         resp.map((b: any) => {
-          beacons.push(new LongConnection(b._id["$oid"], b.dst, b.src, b.dat.tuples[0], b.dat.maxdur, b.dat.tdur));
+          beacons.push(new LongConnection(b._id["$oid"], b.dst, b.src, b.dat[0].tuples[0], b.dat[0].maxdur, b.dat[0].tdur));
         })
         return beacons
       })

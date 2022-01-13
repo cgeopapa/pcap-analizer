@@ -19,7 +19,7 @@ export class DnsDaoService {
       map((resp: any) => {
         const beacons: DNS[] = [];
         resp.map((b: any) => {
-          beacons.push(new DNS(b._id["$oid"], b.domain, b.dat.visited, b.subdomain_count));
+          beacons.push(new DNS(b._id["$oid"], b.domain, b.dat[0].visited, b.subdomain_count));
         })
         return beacons
       })

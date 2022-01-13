@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PrimeNGConfig } from 'primeng/api';
 
@@ -29,6 +30,7 @@ import { HttpTrafficTableComponent } from './http-traffic-table/http-traffic-tab
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     PanelMenuModule,

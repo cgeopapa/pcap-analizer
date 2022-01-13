@@ -13,12 +13,13 @@ export class UagentDaoService {
   ) { }
 
   public get(): Observable<UserAgent[]> {
-    return this.http.get("http://192.168.105.105/uconns", {
+    return this.http.get("http://192.168.105.105/uagents", {
       observe: 'body'
     }).pipe(
       map((resp: any) => {
         const beacons: UserAgent[] = [];
         resp.map((b: any) => {
+          console.log(b);
           beacons.push(new UserAgent(b._id["$oid"], b.user_agent, b.dat.seen));
         })
         return beacons

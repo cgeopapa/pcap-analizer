@@ -1,1 +1,27 @@
-<p>long-connection-table works!</p>
+<div class="card">
+    <h2 class="m-2">Long Connections</h2>
+    <p-table [value]="longCon" styleClass="p-datatable-striped" responsiveLayout="scroll"
+        [scrollable]="true" scrollHeight="calc(100vh - 110px)"
+        [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [style]="{'height': '100%'}"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="maxdur">Maximum Duration<p-sortIcon field="maxdur"></p-sortIcon></th>
+                <th pSortableColumn="tdur">Total Duration<p-sortIcon field="tdur"></p-sortIcon></th>
+                <th pSortableColumn="details">Port:Protocol:Service<p-sortIcon field="details"></p-sortIcon></th>
+                <th pSortableColumn="src">Source IP<p-sortIcon field="src"></p-sortIcon></th>
+                <th pSortableColumn="dst">Destination IP<p-sortIcon field="dst"></p-sortIcon></th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-l>
+            <tr>
+                <td>{{l.maxdur}}</td>
+                <td>{{l.tdur}}</td>
+                <td>{{l.details}}</td>
+                <td>{{l.src}}</td>
+                <td>{{l.dst}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
