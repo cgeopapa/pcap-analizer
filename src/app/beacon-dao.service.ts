@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
 import { Beacon } from './model/Beacon';
 
 @Injectable({
@@ -25,4 +25,37 @@ export class BeaconDaoService {
       })
     )
   }
+
+  public async getDetails(id: string){
+    let details: any = await firstValueFrom(this.getBeacon(id));
+    details.ports = await firstValueFrom(this.getPorts(details.src, details.dst));
+
+    return details;
+  }
+
+  private getBeacon(id: string): Observable<Beacon[]> {
+    return this.http.get("http://192.168.105.105/beacondetails", {
+      observe: 'body',
+      params: new HttpParams().set('objid', id),
+    }).pipe(
+      map((resp: any) => {
+        return resp[0];
+      })
+    )
+  }
+
+  private getPorts(src: string, dst: string) {
+    return this.http.get("http://192.168.105.105/portsinfo", {
+      observe: 'body',
+      params: new HttpParams()
+        .set('srcip', src)
+        .set('dstip', dst)
+        .set('n', 0)
+    }).pipe(
+      map((resp: any) => {
+        return resp;
+      })
+    )
+  }
+
 }

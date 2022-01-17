@@ -1,0 +1,18 @@
+.details {
+    // padding: 2rem;
+    text-align: left;
+    th, td {
+        border-bottom: 1px solid var(--surface-100);
+        padding: 1rem;
+    }
+    th {
+        width: 15rem;
+    }
+    tr:nth-child(even) {
+        background-color: var(--surface-50);
+    }
+}
+
+h3 {
+    padding-top: 1rem;
+}
