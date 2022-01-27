@@ -1,8 +1,8 @@
-<div class="h-screen" style="overflow-y: hidden;">
+<div style="overflow-y: hidden;">
     <h2 class="m-2">Beacons</h2>
     <div *ngIf="!details; else elseBlock">
         <p-table [value]="beacons" styleClass="p-datatable-striped" responsiveLayout="scroll"
-            [scrollable]="true" scrollHeight="calc(100vh - 110px)" selectionMode="single"
+            [scrollable]="true"  selectionMode="single"
             [paginator]="true" [rows]="rows" [showCurrentPageReport]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
             <ng-template pTemplate="header">
@@ -43,12 +43,17 @@
                     <td>{{beaconDetails.connection_count}}</td>
                 </tr>
             </table>
-            <h3>Port Analysis</h3>
-            <p-chart type="doughnut" [data]="ports" [options]="doughnutOptions" height="200px"></p-chart>
-            <h3>Time Analysis</h3>
-            <p-chart type="bar" [data]="ts" [options]="options" height="200px"></p-chart>
-            <h3>Data Analysis</h3>
-            <p-chart type="bar" [data]="ds" [options]="options" height="200px"></p-chart>
+            <p-accordion [multiple]="true">
+                <p-accordionTab header="Port Analysis">
+                    <p-chart type="doughnut" [data]="ports" [options]="doughnutOptions" height="200px"></p-chart>
+                </p-accordionTab>
+                <p-accordionTab header="Time Analysis">
+                    <p-chart type="bar" [data]="ts" [options]="options" height="200px"></p-chart>
+                </p-accordionTab>
+                <p-accordionTab header="Data Analysis">
+                    <p-chart type="bar" [data]="ds" [options]="options" height="200px"></p-chart>
+                </p-accordionTab>
+            </p-accordion>        
         </div>
     </ng-template>
 </div>

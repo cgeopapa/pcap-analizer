@@ -13,6 +13,7 @@ import {TableModule} from 'primeng/table';
 import {FileUploadModule} from 'primeng/fileupload';
 import {SplitterModule} from 'primeng/splitter';
 import {ChartModule} from 'primeng/chart';
+import {AccordionModule} from 'primeng/accordion';
 
 import { AppComponent } from './app.component';
 import { BeaconTableComponent } from './beacon-table/beacon-table.component';
@@ -42,6 +43,7 @@ import { MainTablesComponent } from './main-tables/main-tables.component';
     FileUploadModule,
     SplitterModule,
     ChartModule,
+    AccordionModule,
   ],
   providers: [
     PrimeNGConfig,
