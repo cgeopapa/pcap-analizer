@@ -1,19 +1,22 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom, map, Observable } from 'rxjs';
+import { DAO } from './dao';
 import { Beacon } from './model/Beacon';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BeaconDaoService {
+export class BeaconDaoService extends DAO {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    super();
+  }
 
   public get(): Observable<Beacon[]> {
-    return this.http.get("http://192.168.105.105/beacons", {
+    return this.http.get(this.url+"beacons", {
       observe: 'body'
     }).pipe(
       map((resp: any) => {
@@ -34,7 +37,7 @@ export class BeaconDaoService {
   }
 
   private getBeacon(id: string): Observable<Beacon[]> {
-    return this.http.get("http://192.168.105.105/beacondetails", {
+    return this.http.get(this.url+"beacondetails", {
       observe: 'body',
       params: new HttpParams().set('objid', id),
     }).pipe(
@@ -45,7 +48,7 @@ export class BeaconDaoService {
   }
 
   private getPorts(src: string, dst: string) {
-    return this.http.get("http://192.168.105.105/portsinfo", {
+    return this.http.get(this.url+"portsinfo", {
       observe: 'body',
       params: new HttpParams()
         .set('srcip', src)

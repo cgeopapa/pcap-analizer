@@ -1,4 +1,4 @@
-<div style="overflow-y: hidden;">
+<div class="h-screen" style="overflow-y: hidden;">
     <h2 class="m-2">Beacons</h2>
     <div *ngIf="!details; else elseBlock">
         <p-table [value]="beacons" styleClass="p-datatable-striped" responsiveLayout="scroll"
@@ -22,7 +22,7 @@
         </p-table>
     </div>
     <ng-template #elseBlock>
-        <div class="m-4 h-full" style="overflow-y: auto;">
+        <div class="m-4" style="overflow-y: auto; height: 92%;">
             <h2 style="border-bottom: 1px solid gray;" 
                 class="p-2 surface-50 font-light">Beacon ID: {{beaconDetails._id["$oid"]}}</h2>
             <table class="w-full text-lg details">
@@ -43,7 +43,7 @@
                     <td>{{beaconDetails.connection_count}}</td>
                 </tr>
             </table>
-            <p-accordion [multiple]="true">
+            <!-- <p-accordion [multiple]="true">
                 <p-accordionTab header="Port Analysis">
                     <p-chart type="doughnut" [data]="ports" [options]="doughnutOptions" height="200px"></p-chart>
                 </p-accordionTab>
@@ -53,7 +53,14 @@
                 <p-accordionTab header="Data Analysis">
                     <p-chart type="bar" [data]="ds" [options]="options" height="200px"></p-chart>
                 </p-accordionTab>
-            </p-accordion>        
+            </p-accordion>         -->
+			<h2>Port Analysis</h2>
+			<p-chart type="doughnut" [data]="ports" [options]="doughnutOptions" height="200px"></p-chart>
+			<h2>Time Analysis</h2>
+			<p-chart type="bar" [data]="ts" [options]="options" height="200px"></p-chart>
+			<h2>Data Analysis</h2>
+			<p-chart type="bar" [data]="ds" [options]="options" height="200px"></p-chart>
+
         </div>
     </ng-template>
 </div>

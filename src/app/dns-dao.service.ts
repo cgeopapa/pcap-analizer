@@ -1,19 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { DAO } from './dao';
 import { DNS } from './model/Dns';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DnsDaoService {
+export class DnsDaoService extends DAO {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    super();
+  }
 
   public get(): Observable<DNS[]> {
-    return this.http.get("http://192.168.105.105/dns", {
+    return this.http.get(this.url+"dns", {
       observe: 'body'
     }).pipe(
       map((resp: any) => {

@@ -1,19 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { DAO } from './dao';
 import { LongConnection } from './model/LongConnection';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LongconDaoService {
+export class LongconDaoService extends DAO {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    super();
+  }
 
   public get(): Observable<LongConnection[]> {
-    return this.http.get("http://192.168.105.105/uconns", {
+    return this.http.get(this.url+"uconns", {
       observe: 'body'
     }).pipe(
       map((resp: any) => {

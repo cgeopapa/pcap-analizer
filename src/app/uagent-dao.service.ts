@@ -1,19 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { DAO } from './dao';
 import { UserAgent } from './model/UserAgents';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UagentDaoService {
+export class UagentDaoService extends DAO {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+    super();
+  }
 
   public get(): Observable<UserAgent[]> {
-    return this.http.get("http://192.168.105.105/uagents", {
+    return this.http.get(this.url+"uagents", {
       observe: 'body'
     }).pipe(
       map((resp: any) => {

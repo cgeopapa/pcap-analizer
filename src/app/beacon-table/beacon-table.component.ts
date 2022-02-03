@@ -47,6 +47,7 @@ export class BeaconTableComponent implements OnInit {
   ngOnInit(): void {
     this.beaconDao.get().subscribe((b: any) => {
       this.beacons = b
+      console.log(b);
     });
   }
 
