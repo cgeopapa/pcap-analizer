@@ -10,9 +10,9 @@ import { UserAgent } from './model/UserAgents';
 export class UagentDaoService extends DAO {
 
   constructor(
-    private http: HttpClient
+    http: HttpClient
   ) {
-    super();
+    super(http);
   }
 
   public get(): Observable<UserAgent[]> {

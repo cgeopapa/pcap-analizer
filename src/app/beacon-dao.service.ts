@@ -10,9 +10,9 @@ import { Beacon } from './model/Beacon';
 export class BeaconDaoService extends DAO {
 
   constructor(
-    private http: HttpClient
+    http: HttpClient
   ) {
-    super();
+    super(http);
   }
 
   public get(): Observable<Beacon[]> {

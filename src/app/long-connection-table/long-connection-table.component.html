@@ -1,27 +1,65 @@
 <div class="card">
     <h2 class="m-2">Long Connections</h2>
-    <p-table [value]="longCon" styleClass="p-datatable-striped" responsiveLayout="scroll"
-        [scrollable]="true" scrollHeight="calc(100vh - 110px)"
-        [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [style]="{'height': '100%'}"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="maxdur">Maximum Duration<p-sortIcon field="maxdur"></p-sortIcon></th>
-                <th pSortableColumn="tdur">Total Duration<p-sortIcon field="tdur"></p-sortIcon></th>
-                <th pSortableColumn="details">Port:Protocol:Service<p-sortIcon field="details"></p-sortIcon></th>
-                <th pSortableColumn="src">Source IP<p-sortIcon field="src"></p-sortIcon></th>
-                <th pSortableColumn="dst">Destination IP<p-sortIcon field="dst"></p-sortIcon></th>
-
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-l>
-            <tr>
-                <td>{{l.maxdur}}</td>
-                <td>{{l.tdur}}</td>
-                <td>{{l.details}}</td>
-                <td>{{l.src}}</td>
-                <td>{{l.dst}}</td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <div *ngIf="!details; else elseBlock">
+        <p-table [value]="longCon" styleClass="p-datatable-striped" responsiveLayout="scroll"
+            [scrollable]="true" scrollHeight="calc(100vh - 110px)" selectionMode="single"
+            [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [style]="{'height': '100%'}"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="maxdur">Maximum Duration<p-sortIcon field="maxdur"></p-sortIcon></th>
+                    <th pSortableColumn="tdur">Total Duration<p-sortIcon field="tdur"></p-sortIcon></th>
+                    <th pSortableColumn="details">Port:Protocol:Service<p-sortIcon field="details"></p-sortIcon></th>
+                    <th pSortableColumn="src">Source IP<p-sortIcon field="src"></p-sortIcon></th>
+                    <th pSortableColumn="dst">Destination IP<p-sortIcon field="dst"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-l>
+                <tr (click)="view(l.dst)">
+                    <td>{{l.maxdur}}</td>
+                    <td>{{l.tdur}}</td>
+                    <td>{{l.details}}</td>
+                    <td>{{l.src}}</td>
+                    <td>{{l.dst}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <ng-template #elseBlock>
+        <div class="m-4" style="overflow-y: auto; height: 92%;">
+            <h2 style="border-bottom: 1px solid gray;" 
+                class="p-2 surface-50 font-light">Virus Report</h2>
+            <table class="w-full text-lg details">
+                <tr>
+                    <th>IP</th>
+                    <td>
+                        <i *ngIf="loading" class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                        {{longConDetails.ip}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>ISP Provider</th>
+                    <td>
+                        <i *ngIf="loading" class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                        {{longConDetails.AIP_isp_provider}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Domain Name</th>
+                    <td>
+                        <i *ngIf="loading" class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                        {{longConDetails.AIP_domain_name}}
+                    </td>
+                </tr>
+            </table>
+            <h2 style="border-bottom: 1px solid gray;" 
+            class="p-2 surface-50 font-light mb-2">Abuse Report</h2>
+            <div class="grid">
+                <p-chart type="doughnut" [data]="api_abuse" class="col-6"
+                    [options]="doughnutOptions" height="200px"></p-chart>
+                <p-chart type="doughnut" [data]="vt_abuse" class="col-6"
+                    [options]="doughnutOptions" height="200px"></p-chart>
+            </div>
+        </div>
+    </ng-template>
 </div>

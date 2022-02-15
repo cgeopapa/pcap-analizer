@@ -10,9 +10,9 @@ import { LongConnection } from './model/LongConnection';
 export class LongconDaoService extends DAO {
 
   constructor(
-    private http: HttpClient
+    http: HttpClient
   ) {
-    super();
+    super(http);
   }
 
   public get(): Observable<LongConnection[]> {

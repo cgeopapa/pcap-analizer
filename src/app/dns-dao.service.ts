@@ -10,9 +10,9 @@ import { DNS } from './model/Dns';
 export class DnsDaoService extends DAO {
 
   constructor(
-    private http: HttpClient
+    http: HttpClient
   ) {
-    super();
+    super(http);
   }
 
   public get(): Observable<DNS[]> {

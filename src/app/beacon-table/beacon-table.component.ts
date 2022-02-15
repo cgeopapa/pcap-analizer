@@ -37,8 +37,8 @@ export class BeaconTableComponent implements OnInit {
         display: true,
         position: "left"
       }
-    },  
-  }  
+    },
+  }
 
   constructor(
     private beaconDao: BeaconDaoService,
