@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { map } from "rxjs";
+import { environment } from "src/environments/environment";
 
 export class DAO {
-    protected url = "http://10.226.32.208:5000/";
+    protected url = environment.url;
 
     constructor(
         protected http: HttpClient
