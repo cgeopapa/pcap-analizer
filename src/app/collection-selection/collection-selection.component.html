@@ -1,0 +1,7 @@
+<div class="h-screen w-screen flex align-items-center flex-column p-4">
+    <h1 class="text-white">Select a pcap collection to load</h1>
+    <div class="grid p-2 m-2">
+        <button *ngFor="let col of collections" [label]="col" pButton icon="pi pi-server"
+            class="w-10rem p-2 p-button-lg p-button-raised m-2"></button>
+    </div>
+</div>

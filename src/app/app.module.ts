@@ -14,6 +14,8 @@ import {FileUploadModule} from 'primeng/fileupload';
 import {SplitterModule} from 'primeng/splitter';
 import {ChartModule} from 'primeng/chart';
 import {AccordionModule} from 'primeng/accordion';
+import {CardModule} from 'primeng/card';
+import {ButtonModule} from 'primeng/button';
 
 import { AppComponent } from './app.component';
 import { BeaconTableComponent } from './beacon-table/beacon-table.component';
@@ -22,6 +24,7 @@ import { DnsTableComponent } from './dns-table/dns-table.component';
 import { UserAgentTableComponent } from './user-agent-table/user-agent-table.component';
 import { HttpTrafficTableComponent } from './http-traffic-table/http-traffic-table.component';
 import { MainTablesComponent } from './main-tables/main-tables.component';
+import { CollectionSelectionComponent } from './collection-selection/collection-selection.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,7 @@ import { MainTablesComponent } from './main-tables/main-tables.component';
     UserAgentTableComponent,
     HttpTrafficTableComponent,
     MainTablesComponent,
+    CollectionSelectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +48,8 @@ import { MainTablesComponent } from './main-tables/main-tables.component';
     SplitterModule,
     ChartModule,
     AccordionModule,
+    CardModule,
+    ButtonModule,
   ],
   providers: [
     PrimeNGConfig,

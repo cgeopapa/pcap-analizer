@@ -16,7 +16,6 @@ export class DAO {
         }).pipe(
         map((resp: any) => {
             return resp;
-        })
-        )
+        }))
     }
 }

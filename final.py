@@ -1,25 +1,26 @@
-from flask import Flask, request, Response,jsonify
-from flask_pymongo import PyMongo, pymongo
+from flask import Flask, request, Response,jsonify, render_template
 from bson.json_util import dumps
 from bson.json_util import loads
 from bson.objectid import ObjectId
-import json
 import requests
 from flask_cors import CORS, cross_origin
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-import sys
+from werkzeug.utils import secure_filename
+from pymongo import MongoClient
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/")
 
-if ( len(sys.argv) == 2 ):
-    dbname = str(sys.argv[1])
-    mongouri = 'mongodb://192.168.105.105:27017/'+dbname
-    app.config['MONGO_DBNAME'] = dbname
-    app.config['MONGO_URI'] = mongouri
-else:
-    app.config['MONGO_DBNAME'] = 'dataset1'
-    app.config['MONGO_URI'] = 'mongodb://192.168.105.105:27017/dataset_1'
+UPLOAD_FOLDER = '/home/ubuntu/project'
+app.secret_key = None
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = set(['pcap'])
+mongo_ip = '192.168.105.105'
+
+def allowed_file(filename):
+	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+app.config['MONGO_URI'] = 'mongodb://{}:27017'.format(mongo_ip)
 
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -27,9 +28,15 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-mongo = PyMongo(app)
+mongo = MongoClient(mongo_ip, 27017)
+db = ""
 
 #################################################################### BEACONS ####################################################################
+@app.route('/', methods=['GET'])
+@cross_origin()
+def index():
+    return render_template("index.html")
+
 @app.route('/beacondetails', methods=['GET'])
 @cross_origin()
 def beacon_id():
@@ -208,38 +215,11 @@ def ports():
 
     return Response(dumps(result),  mimetype='application/json')
 
-# #################################################################### PORTS ######################################################################
-# @app.route('/dnsinfo', methods=['GET'])
-# @cross_origin()
-# def dnsinfo():
-#     if request.method == 'GET':
-#         queryparams = request.args
-#         dns = mongo.db.dns
-#         query = {}
-#         display = ['src', 'dst', 'dns', 'count']
-
-#         if ('srcip' in queryparams):
-#             srcip = queryparams.get('srcip')
-#             query["src"] = {"$eq" : srcip}
-
-#         if ('dstip' in queryparams):
-#             dstip = queryparams.get('dstip')
-#             query["dst"] = {"$eq" : dstip}
-        
-#         if (query is not None):
-#             result = dns.find( query , display).sort("count",-1)
-#         else:
-#             result = dns.find( {} , display ).sort("count", -1)
-
-#     return Response(dumps(result),  mimetype='application/json')
-
-
 #################################################################### PORTS2DB ###################################################################
 def port2db():
-
-    ports = mongo.db.ports
-    ports.drop()
-    ports = mongo.db.ports
+    # ports = mongo.db.ports
+    # ports.drop()
+    # ports = mongo.db.ports
 
     # dns = mongo.db.dns
     # dns.drop()
@@ -290,27 +270,6 @@ def port2db():
         k5 = i['count']
         dic = { "src": k1, "dst": k2, "port": k3, "protocol": k4, "count": k5}
         x = ports.insert_one(dic)
-    
-    # dnsc = mongo.db.dnsc
-    # result = dnsc.aggregate([
-    #     {"$group": {
-    #         "_id": {
-    #             "src": "$src",
-    #             "dst": "$dst",
-    #             "dns": "$dns"
-    #         },
-    #         "count": {"$sum":1}
-    #     }}
-    # ])
-    # result = list(result)
-    # for i in result:
-    #     k = i['_id']
-    #     k1 = k['src']
-    #     k2 = k['dst']
-    #     k3 = k['dns']
-    #     k4 = i['count']
-    #     dic = { "src": k1, "dst": k2, "dns": k3, "count": k4}
-    #     x = dns.insert_one(dic)
 
 ################################################################## VIRUSTOTAL #################################################################
 @app.route('/vtinfo', methods=['GET'])
@@ -385,6 +344,48 @@ def vtinfo():
             e0 = 'No IP Was Given!'
             return e0
 
+#################################################################### COLLECTIONS ####################################################################
+@app.route('/collections', methods=['GET'])
+@cross_origin()
+def collections():
+    dbs = mongo.list_database_names()
+    dbs_filtered = []
+    for db in dbs:
+        if db.startswith("dataset_"):
+            dbs_filtered.append(db)
+    return jsonify({"collections": dbs_filtered})
+
+@app.route('/collection_set', methods=['POST'])
+@cross_origin()
+def collection_set():
+    col = request.args.get("col")
+    if col.startswith("dataset_"):
+        db = col
+        return 200
+    else:
+        return jsonify({"error": "The selected collection is not a pkap analysis collection."}), 200
+
+@app.route('/collection', methods=['DELETE'])
+@cross_origin()
+def collection_delete():
+    col = request.args.get("col")
+    if col.startswith("dataset_"):
+        mongo.drop_database(col)
+        return 200
+    else:
+        return jsonify({"error": "The selected collection is not a pkap analysis collection."}), 200
+
+# @app.route('/collection', methods=['POST'])
+# @cross_origin()
+# def collection():
+#     col = request.args.get("col")
+#     if col.startswith("dataset_"):
+#         mongo. (col)
+#         return 200
+#     else:
+#         return jsonify({"error": "The selected collection is not a pkap analysis collection."}), 200
+
+
 if __name__ == '__main__':
-    port2db()
+    # port2db()
     app.run(host= '0.0.0.0')
