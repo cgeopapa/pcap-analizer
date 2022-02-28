@@ -1,18 +1,12 @@
 <p-splitter [panelSizes]="[30,70]" [minSizes]="[20, 30]" [style]="{'height': '100%', 'overflow': 'hidden'}">
     <ng-template pTemplate>
-        <div class="w-full flex flex-column justify-content-between surface-50">
-            <div>
-                <div class="m-4">
-                    <h1>P.S. Hunter - DI.KYB.</h1>
-                    <sub>Threat Hunting Intelligence</sub>
-                </div>
-                <div class="mb-2">
-                    <p-panelMenu [model]="menuItems"></p-panelMenu>
-                </div>
+        <div class="flex flex-column flex-grow-1">
+            <div class="m-4">
+                <h1>P.S. Hunter - DI.KYB.</h1>
+                <sub>Threat Hunting Intelligence</sub>
             </div>
-            <div>
-                <p-fileUpload url="http://192.168.105.105/chd" [multiple]="false"
-                [showCancelButton]="false"></p-fileUpload>
+            <div class="mb-2">
+                <p-panelMenu [model]="menuItems"></p-panelMenu>
             </div>
         </div>
     </ng-template>

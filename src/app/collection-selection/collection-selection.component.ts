@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { CollectionDaoService } from '../collection-dao.service';
@@ -23,6 +24,7 @@ export class CollectionSelectionComponent implements OnInit {
     private dao: CollectionDaoService,
     private messageService: MessageService,
     private primeConfig: PrimeNGConfig,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -30,6 +32,10 @@ export class CollectionSelectionComponent implements OnInit {
     this.dao.getCollections().subscribe((c: any) => {
       this.collections = c.collections;
     });
+  }
+
+  public selectCol(col: string) {
+    this.router.navigate(["tables"], {queryParams: {col: col}})
   }
 
   public getSelectedFile(event: any) {

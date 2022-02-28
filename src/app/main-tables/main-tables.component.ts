@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MenuItem, PrimeNGConfig } from 'primeng/api';
+import { DAO } from '../dao';
 import { Display } from '../model/Display';
 
 @Component({
@@ -39,10 +41,16 @@ export class MainTablesComponent implements OnInit {
   ]
 
   constructor(
-    private primengConfig: PrimeNGConfig
+    private primengConfig: PrimeNGConfig,
+    private router: ActivatedRoute,
+    private dao: DAO
   ) {}
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
+
+    this.router.queryParams.subscribe((p: any) => {
+      this.dao.setCollection(p.col);
+    })
   }
 }

@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, request, Response,jsonify, render_template
 from bson.json_util import dumps
 from bson.objectid import ObjectId
@@ -44,7 +45,7 @@ def index():
 def beacon_id():
     if request.method == 'GET':
         queryparams = request.args
-        beacon = mongo.db.beacon
+        beacon = mongo[db].beacon
         query = {}
         display = ['score', 'src', 'dst', 'connection_count', 'avg_bytes',
         'ds.counts', 'ds.sizes',
@@ -69,7 +70,7 @@ def beacon_id():
 def beacon_by_score():
     if request.method == 'GET':
         queryparams = request.args
-        beacon = mongo.db.beacon
+        beacon = mongo[db].beacon
         query = {}
         display = ['score', 'src', 'dst']
 
@@ -88,7 +89,7 @@ def beacon_by_score():
 def beacon_by_srcip():
     if request.method == 'GET':
         queryparams = request.args
-        beacon = mongo.db.beacon
+        beacon = mongo[db].beacon
         query = {}
         display = ['score', 'src', 'dst']
 
@@ -107,7 +108,7 @@ def beacon_by_srcip():
 def beacon_by_dstip():
     if request.method == 'GET':
         queryparams = request.args
-        beacon = mongo.db.beacon
+        beacon = mongo[db].beacon
         query = {}
         display = ['score', 'src', 'dst']
 
@@ -126,7 +127,8 @@ def beacon_by_dstip():
 @cross_origin()
 def beacons():
     if request.method == 'GET':
-        beacon = mongo.db.beacon
+        print(db)
+        beacon = mongo[db].beacon
         query = {}
         display = ['score', 'src', 'dst']
 
@@ -134,14 +136,13 @@ def beacons():
             result = beacon.find( {} , display).sort("score",-1)
 
     return Response(dumps(result),  mimetype='application/json')
-    
 
 #################################################################### UCONN ##################################################################
 @app.route('/uconns', methods=['GET'])
 @cross_origin()
 def uconns():
     if request.method == 'GET':
-        uconn = mongo.db.uconn
+        uconn = mongo[db].uconn
         query = {}
         display = ['src', 'dst', 'dat.maxdur', 'dat.tdur', 'dat.tuples']
 
@@ -157,7 +158,7 @@ def uconns():
 @cross_origin()
 def dns():
     if request.method == 'GET':
-        dns = mongo.db.explodedDns
+        dns = mongo[db].explodedDns
         query = {}
         display = ['domain', 'subdomain_count', 'dat.visited']
 
@@ -172,7 +173,7 @@ def dns():
 @cross_origin()
 def uagents():
     if request.method == 'GET':
-        uagent = mongo.db.useragent
+        uagent = mongo[db].useragent
         query = {}
         display = ['user_agent', 'dat.seen']
 
@@ -188,7 +189,7 @@ def uagents():
 def ports():
     if request.method == 'GET':
         queryparams = request.args
-        port = mongo.db.ports
+        port = mongo[db].ports
         query = {}
         display = ['port', 'count', 'protocol']
 
@@ -219,15 +220,15 @@ def ports():
 
 #################################################################### PORTS2DB ###################################################################
 def port2db():
-    # ports = mongo.db.ports
+    # ports = mongo[db].ports
     # ports.drop()
-    # ports = mongo.db.ports
+    # ports = mongo[db].ports
 
-    # dns = mongo.db.dns
+    # dns = mongo[db].dns
     # dns.drop()
-    # dns = mongo.db.dns
+    # dns = mongo[db].dns
 
-    tcp = mongo.db.tcpp
+    tcp = mongo[db].tcpp
     result = tcp.aggregate([
         {"$group": {
             "_id": {
@@ -250,7 +251,7 @@ def port2db():
         dic = { "src": k1, "dst": k2, "port": k3, "protocol": k4, "count": k5}
         x = ports.insert_one(dic)
     
-    udp = mongo.db.udpp
+    udp = mongo[db].udpp
     result = udp.aggregate([
         {"$group": {
             "_id": {
@@ -279,9 +280,9 @@ def port2db():
 def vtinfo():
     if request.method == 'GET':
 
-        vt = mongo.db.vt
+        vt = mongo[db].vt
         vt.drop()
-        vt = mongo.db.vt
+        vt = mongo[db].vt
 
         queryparams = request.args
         #VT
@@ -362,8 +363,10 @@ def collections():
 def collection_set():
     col = request.args.get("col")
     if col.startswith("dataset_"):
+        global db
         db = col
-        return 200
+        print(db)
+        return jsonify(success=True)
     else:
         return jsonify({"error": "The selected collection is not a pkap analysis collection."}), 200
 
@@ -373,7 +376,7 @@ def collection_delete():
     col = request.args.get("col")
     if col.startswith("dataset_"):
         mongo.drop_database(col)
-        return 200
+        return jsonify(success=True)
     else:
         return jsonify({"error": "The selected collection is not a pkap analysis collection."}), 200
 
