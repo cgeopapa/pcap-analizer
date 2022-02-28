@@ -1,7 +1,28 @@
 <div class="h-screen w-screen flex align-items-center flex-column p-4">
-    <h1 class="text-white">Select a pcap collection to load</h1>
+    <h1 class="text-primary">Select a pcap collection to load</h1>
     <div class="grid p-2 m-2">
-        <button *ngFor="let col of collections" [label]="col" pButton icon="pi pi-server"
-            class="w-10rem p-2 p-button-lg p-button-raised m-2"></button>
+        <button *ngFor="let col of collections" [label]="col" pButton pRipple icon="pi pi-server"
+            class="w-10rem h-4rem p-2 p-button-lg p-button-raised m-2"></button>
+    </div>
+    <div>
+        <h2 class="text-primary">Create new Collection</h2>
+        <div class="m-4 w-30rem p-fluid">
+            <div class="field">
+                <span class="p-float-label mt-2">
+                    <input id="colName" type="text" pInputText [(ngModel)]="colName"> 
+                    <label for="colName">Collection Name</label>
+                </span>
+                <small class="p-error" *ngIf="submitted && !colNameValid">Name is required and MUST be unique.</small>
+            </div>
+            <div class="mt-2">
+                <p-fileUpload (onSelect)="getSelectedFile($event)" [multiple]="false" accept=".pcap"
+                [previewWidth]="0" #pcapU
+                [showCancelButton]="false" [showUploadButton]="false" [draggable]="true"></p-fileUpload>
+                <small class="p-error" *ngIf="submitted && !pcap">You have not selected a pcap file.</small>
+            </div>
+            <button pButton pRipple label="Upload" icon="pi pi-upload" class="w-full mt-2"
+                (click)="upload()"></button>
+        </div>
     </div>
 </div>
+<p-toast></p-toast>

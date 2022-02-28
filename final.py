@@ -1,17 +1,19 @@
 from flask import Flask, request, Response,jsonify, render_template
 from bson.json_util import dumps
-from bson.json_util import loads
 from bson.objectid import ObjectId
+from itsdangerous import json
 import requests
 from flask_cors import CORS, cross_origin
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from werkzeug.utils import secure_filename
+import os
+import subprocess
 from pymongo import MongoClient
 
 app = Flask(__name__, static_url_path="/")
 
-UPLOAD_FOLDER = '/home/ubuntu/project'
+UPLOAD_FOLDER = '/home/ubuntu/threat-hunter/uploads'
 app.secret_key = None
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = set(['pcap'])
@@ -375,15 +377,29 @@ def collection_delete():
     else:
         return jsonify({"error": "The selected collection is not a pkap analysis collection."}), 200
 
-# @app.route('/collection', methods=['POST'])
-# @cross_origin()
-# def collection():
-#     col = request.args.get("col")
-#     if col.startswith("dataset_"):
-#         mongo. (col)
-#         return 200
-#     else:
-#         return jsonify({"error": "The selected collection is not a pkap analysis collection."}), 200
+@app.route('/collection', methods=['POST'])
+@cross_origin()
+def chd():
+    if 'file' not in request.files:
+        print('No file part')
+        return jsonify({"error": 'No file part.'}), 200
+    file = request.files['file']
+    if 'colName' not in request.form or request.form['colName'] == '':
+        print('No collection name')
+        return jsonify({"error": 'No collection name.'}), 200
+    colName = request.form['colName']
+    if file and allowed_file(file.filename):
+        filename = secure_filename("dataset_"+file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        print('File successfully uploaded')
+        #Path where log files are stored
+        PATH_TO_LOGS = os.path.join(app.config['UPLOAD_FOLDER'], "logs")
+        DATASET_NAME = "dataset_"+colName
+        # subprocess.check_call(['/home/ubuntu/project/script.sh', app.config['UPLOAD_FOLDER'], filename, DATASET_NAME, PATH_TO_LOGS])
+        return jsonify(success=True)
+    else:
+        print('Allowed file types are pcap')
+        return jsonify({"error": 'Allowed file types are pcap'}), 200
 
 
 if __name__ == '__main__':

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { PrimeNGConfig } from 'primeng/api';
 
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {TableModule} from 'primeng/table';
 import {FileUploadModule} from 'primeng/fileupload';
@@ -16,6 +16,9 @@ import {ChartModule} from 'primeng/chart';
 import {AccordionModule} from 'primeng/accordion';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {ToastModule} from 'primeng/toast';
+import {RippleModule} from 'primeng/ripple';
 
 import { AppComponent } from './app.component';
 import { BeaconTableComponent } from './beacon-table/beacon-table.component';
@@ -50,9 +53,14 @@ import { CollectionSelectionComponent } from './collection-selection/collection-
     AccordionModule,
     CardModule,
     ButtonModule,
+    InputTextModule,
+    FormsModule,
+    ToastModule,
+    RippleModule,
   ],
   providers: [
     PrimeNGConfig,
+    MessageService,
   ],
   bootstrap: [AppComponent]
 })
