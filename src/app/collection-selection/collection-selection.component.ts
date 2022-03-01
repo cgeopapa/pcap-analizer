@@ -15,6 +15,7 @@ export class CollectionSelectionComponent implements OnInit {
 
   collections: string[] = [];
   
+  loading = false;
   submitted = false;
   colName: string | null = null;
   colNameValid = false;
@@ -46,6 +47,7 @@ export class CollectionSelectionComponent implements OnInit {
     this.submitted = true;
     this.colNameValid = this.colName != null && !this.collections.includes(this.colName);
     if(this.pcap && this.colNameValid){
+      this.loading = true;
       this.dao.uploadPcap(this.pcap, this.colName!).then(() => {
         this.submitted = false;
         this.colName = null;
@@ -56,6 +58,7 @@ export class CollectionSelectionComponent implements OnInit {
           summary: "Success",
           detail: ".pcap file successfully uploaded"
         })
+        this.loading = false;
       });
     }
   }

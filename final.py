@@ -220,13 +220,13 @@ def ports():
 
 #################################################################### PORTS2DB ###################################################################
 def port2db():
-    # ports = mongo[db].ports
-    # ports.drop()
-    # ports = mongo[db].ports
+    ports = mongo[db].ports
+    ports.drop()
+    ports = mongo[db].ports
 
-    # dns = mongo[db].dns
-    # dns.drop()
-    # dns = mongo[db].dns
+    dns = mongo[db].dns
+    dns.drop()
+    dns = mongo[db].dns
 
     tcp = mongo[db].tcpp
     result = tcp.aggregate([
