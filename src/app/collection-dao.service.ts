@@ -16,12 +16,20 @@ export class CollectionDaoService extends DAO {
   }
 
   public getCollections() {
-    return this.http.get(this.url+"collections", {
+    const takis = this.http.get(this.url+"collections", {
       observe: 'body',
+    })
+    return lastValueFrom(takis);
+  }
+
+  public deleteCollection(col: string) {
+    const del = this.http.delete(this.url+"collection", {
+      params: new HttpParams().set("col", col)
     }).pipe(
       map((resp: any) => {
           return resp;
-      }))
+    }))
+    return lastValueFrom(del);
   }
 
   public uploadPcap(pcap: File, colName: string) {

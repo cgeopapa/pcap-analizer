@@ -16,7 +16,7 @@ export class LongConnectionTableComponent implements OnInit {
   longConDetails: any = {};
 
   loading = true;
-  api_abuse: any = {};
+  api_abuse = "";
   vt_abuse: any = {};
 
   doughnutOptions = {
@@ -48,13 +48,7 @@ export class LongConnectionTableComponent implements OnInit {
       this.longConDetails = info[0];
       this.longConDetails["ip"] = ip;
 
-      this.api_abuse = {
-        labels: ["Confidence of Abuse (%)"],
-        datasets: [{
-          data: [this.longConDetails.AIP_confidence_of_abuse],
-          borderColor: ["#42A5F5"],
-        }]
-      }
+      this.api_abuse = this.longConDetails.AIP_confidence_of_abuse;
 
       this.vt_abuse = {
         labels: ["Malicious", "Clean"],

@@ -55,8 +55,12 @@
             <h2 style="border-bottom: 1px solid gray;" 
             class="p-2 surface-50 font-light mb-2">Abuse Report</h2>
             <div class="grid">
-                <p-chart type="doughnut" [data]="api_abuse" class="col-6"
-                    [options]="doughnutOptions" height="200px"></p-chart>
+                <div class="col-6 flex flex-column justify-content-center align-items-center" *ngIf="api_abuse !== ''">
+                    <h3 class="font-light">Confidence of Abuse</h3>
+                    <p class="text-8xl">{{api_abuse}}%</p>
+                </div>
+                <!-- <p-chart type="doughnut" [data]="api_abuse" class="col-6"
+                    [options]="doughnutOptions" height="200px"></p-chart> -->
                 <p-chart type="doughnut" [data]="vt_abuse" class="col-6"
                     [options]="doughnutOptions" height="200px"></p-chart>
             </div>

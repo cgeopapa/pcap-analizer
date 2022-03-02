@@ -1,4 +1,6 @@
 from crypt import methods
+from sqlite3 import Time
+import time
 from flask import Flask, request, Response,jsonify, render_template
 from bson.json_util import dumps
 from bson.objectid import ObjectId
@@ -351,18 +353,17 @@ def vtinfo():
 @app.route('/collections', methods=['GET'])
 @cross_origin()
 def collections():
-    dbs = mongo.list_database_names()
-    dbs_filtered = []
-    for db in dbs:
-        if db.startswith("dataset_"):
-            dbs_filtered.append(db)
-    return jsonify({"collections": dbs_filtered})
+    dbs = mongo["MetaDatabase"].databases.find({}, ['name'])
+    return Response(dumps(dbs),  mimetype='application/json')
 
 @app.route('/collection_set', methods=['POST'])
 @cross_origin()
 def collection_set():
     col = request.args.get("col")
-    if col.startswith("dataset_"):
+    query = {}
+    query["name"] = {"$eq": col}
+    isRita = mongo['MetaDatabase'].databases.find(query)
+    if len(list(isRita)) > 0:
         global db
         db = col
         print(db)
@@ -374,8 +375,13 @@ def collection_set():
 @cross_origin()
 def collection_delete():
     col = request.args.get("col")
-    if col.startswith("dataset_"):
+    query = {
+        "name": col
+    }
+    isRita = mongo['MetaDatabase'].databases.count_documents(query)
+    if isRita > 0:
         mongo.drop_database(col)
+        mongo['MetaDatabase'].databases.delete_one(query)
         return jsonify(success=True)
     else:
         return jsonify({"error": "The selected collection is not a pkap analysis collection."}), 200
@@ -392,13 +398,18 @@ def chd():
         return jsonify({"error": 'No collection name.'}), 200
     colName = request.form['colName']
     if file and allowed_file(file.filename):
-        filename = secure_filename("dataset_"+file.filename)
+        filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         print('File successfully uploaded')
         #Path where log files are stored
         PATH_TO_LOGS = os.path.join(app.config['UPLOAD_FOLDER'], "logs")
         DATASET_NAME = "dataset_"+colName
-        # subprocess.check_call(['/home/ubuntu/project/script.sh', app.config['UPLOAD_FOLDER'], filename, DATASET_NAME, PATH_TO_LOGS])
+        subprocess.check_call(['/home/ubuntu/project/script.sh', app.config['UPLOAD_FOLDER'], filename, DATASET_NAME, PATH_TO_LOGS])
+        
+        query = {
+            "name": {"$eq": filename}
+        }
+        mongo["MetaDatabase"].database.update_one(query, {"$push": {"timestamp": time.time()}})
         return jsonify(success=True)
     else:
         print('Allowed file types are pcap')

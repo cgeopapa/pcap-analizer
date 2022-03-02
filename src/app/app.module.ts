@@ -6,7 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
+import {ConfirmationService} from 'primeng/api';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {TableModule} from 'primeng/table';
@@ -57,10 +58,12 @@ import { CollectionSelectionComponent } from './collection-selection/collection-
     FormsModule,
     ToastModule,
     RippleModule,
+    ConfirmPopupModule,
   ],
   providers: [
     PrimeNGConfig,
     MessageService,
+    ConfirmationService,
   ],
   bootstrap: [AppComponent]
 })

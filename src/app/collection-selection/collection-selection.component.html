@@ -1,8 +1,19 @@
+<img src="../../assets/globe.png" alt="globe" class="absolute">
 <div class="h-screen w-screen flex align-items-center flex-column p-4">
     <h1 class="text-primary">Select a pcap collection to load</h1>
     <div class="grid p-2 m-2">
-        <button *ngFor="let col of collections" [label]="col" pButton pRipple icon="pi pi-server" id="dbb"
-            class="w-10rem h-4rem p-2 p-button-lg p-button-raised m-2" (click)="selectCol(col)"></button>
+        <p-card *ngFor="let col of collections" (click)="selectCol(col.name)"
+            class="m-2 w-10rem transition-all transition-duration-300">
+            <ng-template pTemplate="header">
+                <button pButton pRipple [label]="col.name" class="p-button-link text-2xl"
+                (click)="selectCol(col.name)"></button>
+            </ng-template>
+            <ng-template pTemplate="footer" class="p-fluid">
+                <button pButton pRipple icon="pi pi-trash" label="Delete"
+                    (click)="delCol(col.name, $event)"
+                    class="p-button-raised p-button-danger w-full"></button>
+            </ng-template>
+        </p-card>
     </div>
     <div>
         <h2 class="text-primary">Create new Collection</h2>
@@ -26,3 +37,4 @@
     </div>
 </div>
 <p-toast></p-toast>
+<p-confirmPopup></p-confirmPopup>

@@ -22,7 +22,6 @@ export class UagentDaoService extends DAO {
       map((resp: any) => {
         const beacons: UserAgent[] = [];
         resp.map((b: any) => {
-          console.log(b);
           beacons.push(new UserAgent(b._id["$oid"], b.user_agent, b.dat.seen));
         })
         return beacons
