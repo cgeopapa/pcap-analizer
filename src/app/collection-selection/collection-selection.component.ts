@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
@@ -76,5 +77,14 @@ export class CollectionSelectionComponent implements OnInit {
   }
 
   private getCol() {
-    this.dao.getCollections().then((c: any) => this.collections = c);  }
+    this.dao.getCollections().then((c: any) => {
+      this.collections = c.map((c: any) => {
+        if(c.timestamp) {
+          const time = new Date(c.timestamp[0]*1000);
+          c.timestamp = time;
+        }
+        return c;
+      });
+    });
+  }
 }

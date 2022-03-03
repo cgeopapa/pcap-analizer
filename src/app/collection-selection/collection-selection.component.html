@@ -1,14 +1,19 @@
-<h1 class="bg-primary p-2 pb-0">P.S. Hunter - DI.KYB.</h1>
-<h2  class="bg-primary pl-2 pb-2 pt-0 m-0 text-sm">Threat Hunting Intelligence</h2>
 <img src="../../assets/globe.png" alt="globe" class="absolute">
-<div class="h-screen w-screen flex align-items-center flex-column p-4">
-    <h1 class="text-primary">Select a pcap collection to load</h1>
+<div class="h-screen w-screen flex align-items-center flex-column">
+    <h1 class="bg-primary p-2 pb-0 w-full">P.S. Hunter - DI.KYB.</h1>
+    <h2  class="bg-primary pl-2 pb-2 pt-0 m-0 text-sm w-full">Threat Hunting Intelligence</h2>
+    <h1 class="text-primary text-left mt-2">Select a pcap collection to load</h1>
     <div class="grid p-2 m-2">
         <p-card *ngFor="let col of collections"
-            class="m-2 w-10rem transition-all transition-duration-300">
-            <ng-template pTemplate="header">
+            class="m-2 w-14rem transition-all transition-duration-300">
+            <ng-template pTemplate="title">
                 <button pButton pRipple [label]="col.name" class="p-button-link text-2xl"
                 (click)="selectCol(col.name)"></button>
+            </ng-template>
+            <ng-template pTemplate="subtitle">
+                <div class="h-1rem">
+                    {{col.timestamp | date:'d/M/yy HH:mm:SS'}}
+                </div>
             </ng-template>
             <ng-template pTemplate="footer" class="p-fluid">
                 <button pButton pRipple icon="pi pi-trash" label="Delete"

@@ -353,7 +353,7 @@ def vtinfo():
 @app.route('/collections', methods=['GET'])
 @cross_origin()
 def collections():
-    dbs = mongo["MetaDatabase"].databases.find({}, ['name'])
+    dbs = mongo["MetaDatabase"].databases.find({}, ['name', 'timestamp'])
     return Response(dumps(dbs),  mimetype='application/json')
 
 @app.route('/collection_set', methods=['POST'])
@@ -403,13 +403,11 @@ def chd():
         print('File successfully uploaded')
         #Path where log files are stored
         PATH_TO_LOGS = os.path.join(app.config['UPLOAD_FOLDER'], "logs")
-        DATASET_NAME = "dataset_"+colName
+        DATASET_NAME = colName
         subprocess.check_call(['/home/ubuntu/project/script.sh', app.config['UPLOAD_FOLDER'], filename, DATASET_NAME, PATH_TO_LOGS])
-        
-        query = {
-            "name": {"$eq": filename}
-        }
-        mongo["MetaDatabase"].database.update_one(query, {"$push": {"timestamp": time.time()}})
+
+        query = {"name": colName}
+        mongo["MetaDatabase"].databases.update_one(query, {"$push": {"timestamp": time.time()}})
         return jsonify(success=True)
     else:
         print('Allowed file types are pcap')
