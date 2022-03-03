@@ -54,7 +54,7 @@ export class CollectionSelectionComponent implements OnInit {
     this.pcap = event.files[0];
   }
 
-  upload() {
+  public upload() {
     this.submitted = true;
     this.colNameValid = this.colName != null && !this.collections.includes(this.colName);
     if(this.pcap && this.colNameValid){
@@ -70,6 +70,7 @@ export class CollectionSelectionComponent implements OnInit {
           detail: ".pcap file successfully uploaded"
         })
         this.loading = false;
+        this.getCol();
       });
     }
   }

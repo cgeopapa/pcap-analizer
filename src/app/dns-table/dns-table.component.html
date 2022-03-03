@@ -13,10 +13,13 @@
         </ng-template>
         <ng-template pTemplate="body" let-d>
             <tr>
-                <td>{{d.subdomainCount}}</td>
+                <td>{{d.domain}}</td>
                 <td>{{d.visited}}</td>
                 <td>{{d.subdomainCount}}</td>
             </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            No DNS records found in this pcap collection
         </ng-template>
     </p-table>
 </div>
