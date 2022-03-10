@@ -11,6 +11,7 @@ import { Values } from '../model/Values';
 export class DnsTableComponent implements OnInit {
   dns: DNS[] = [];
   rows = Values.rows;
+  loading = true;
 
   constructor(
     private dao: DnsDaoService
@@ -19,6 +20,7 @@ export class DnsTableComponent implements OnInit {
   ngOnInit(): void {
     this.dao.get().subscribe((d: any) => {
       this.dns = d;
+      this.loading = false;
     })
   }
 

@@ -1,10 +1,11 @@
 <p-splitter [panelSizes]="[30,70]" [minSizes]="[20, 30]" [style]="{'height': '100%', 'overflow': 'hidden'}">
     <ng-template pTemplate>
         <div class="flex flex-column flex-grow-1">
-            <div class="m-4">
+            <div class="m-4 cursor-pointer a" pRipple [routerLink]="['/']">
                 <h1>P.S. Hunter - DI.KYB.</h1>
                 <sub>Threat Hunting Intelligence</sub>
             </div>
+            <h2 class="m-2 font-light text-xl">Collection: <code class="text-3xl text-primary">{{collection}}</code></h2>
             <div class="mb-2">
                 <p-panelMenu [model]="menuItems"></p-panelMenu>
             </div>

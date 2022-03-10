@@ -76,6 +76,11 @@ export class CollectionSelectionComponent implements OnInit {
     }
   }
 
+  public spaceToUnder(event: any) {
+    // console.log(event.target.value);
+    this.colName = this.colName!.replace(" ", "_");
+  }
+
   private getCol() {
     this.dao.getCollections().then((c: any) => {
       this.collections = c.map((c: any) => {

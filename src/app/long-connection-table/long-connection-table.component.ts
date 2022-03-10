@@ -38,6 +38,7 @@ export class LongConnectionTableComponent implements OnInit {
   ngOnInit(): void {
     this.dao.get().subscribe((l: any) => {
       this.longCon = l;
+      this.loading = false;
     })
   }
 

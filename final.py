@@ -30,9 +30,6 @@ app.config['MONGO_URI'] = 'mongodb://{}:27017'.format(mongo_ip)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
-
 mongo = MongoClient(mongo_ip, 27017)
 db = ""
 
@@ -67,69 +64,10 @@ def beacon_id():
     #return dumps(result)
     return Response(dumps(result),  mimetype='application/json')
 
-@app.route('/beacons_by_score', methods=['GET'])
-@cross_origin()
-def beacon_by_score():
-    if request.method == 'GET':
-        queryparams = request.args
-        beacon = mongo[db].beacon
-        query = {}
-        display = ['score', 'src', 'dst']
-
-        # Query Parameters
-        if ('score' in queryparams):
-            score = float(queryparams.get('score'))
-            query["score"] = {"$gte" : score}
-
-        result = beacon.find( query , display ).sort("score",-1)
-              
-    #return dumps(result)
-    return Response(dumps(result),  mimetype='application/json')
-
-@app.route('/beacons_by_srcip', methods=['GET'])
-@cross_origin()
-def beacon_by_srcip():
-    if request.method == 'GET':
-        queryparams = request.args
-        beacon = mongo[db].beacon
-        query = {}
-        display = ['score', 'src', 'dst']
-
-        # Query Parameters
-        if ('srcip' in queryparams):
-            srcip = queryparams.get('srcip')
-            query["src"] = {"$eq" : srcip}
-
-        result = beacon.find( query , display ).sort("score",-1)
-              
-    #return dumps(result)
-    return Response(dumps(result),  mimetype='application/json')
-
-@app.route('/beacons_by_dstip', methods=['GET'])
-@cross_origin()
-def beacon_by_dstip():
-    if request.method == 'GET':
-        queryparams = request.args
-        beacon = mongo[db].beacon
-        query = {}
-        display = ['score', 'src', 'dst']
-
-        # Query Parameters
-        if ('dstip' in queryparams):
-            dstip = queryparams.get('dstip')
-            query["dst"] = {"$eq" : dstip}
-
-        result = beacon.find( query , display ).sort("score",-1)
-              
-    #return dumps(result)
-    return Response(dumps(result),  mimetype='application/json')
-
-
 @app.route('/beacons', methods=['GET'])
 @cross_origin()
 def beacons():
     if request.method == 'GET':
-        print(db)
         beacon = mongo[db].beacon
         query = {}
         display = ['score', 'src', 'dst']
@@ -149,7 +87,6 @@ def uconns():
         display = ['src', 'dst', 'dat.maxdur', 'dat.tdur', 'dat.tuples']
 
         if (query is not None):
-            print(type(uconn))
             result = uconn.find( {} , display).sort("dat.maxdur",-1)              
 
     #return dumps(result)
@@ -219,62 +156,6 @@ def ports():
 
 
     return Response(dumps(result),  mimetype='application/json')
-
-#################################################################### PORTS2DB ###################################################################
-def port2db():
-    ports = mongo[db].ports
-    ports.drop()
-    ports = mongo[db].ports
-
-    dns = mongo[db].dns
-    dns.drop()
-    dns = mongo[db].dns
-
-    tcp = mongo[db].tcpp
-    result = tcp.aggregate([
-        {"$group": {
-            "_id": {
-                "src": "$src",
-                "dst": "$dst",
-                "port": "$port",
-                "protocol": "tcp"
-            },
-            "count": {"$sum":1}
-        }}
-    ])
-    result = list(result)
-    for i in result:
-        k = i['_id']
-        k1 = k['src']
-        k2 = k['dst']
-        k3 = k['port']
-        k4 = k['protocol']
-        k5 = i['count']
-        dic = { "src": k1, "dst": k2, "port": k3, "protocol": k4, "count": k5}
-        x = ports.insert_one(dic)
-    
-    udp = mongo[db].udpp
-    result = udp.aggregate([
-        {"$group": {
-            "_id": {
-                "src": "$src",
-                "dst": "$dst",
-                "port": "$port",
-                "protocol": "udp"
-            },
-            "count": {"$sum":1}
-        }}
-    ])
-    result = list(result)
-    for i in result:
-        k = i['_id']
-        k1 = k['src']
-        k2 = k['dst']
-        k3 = k['port']
-        k4 = k['protocol']
-        k5 = i['count']
-        dic = { "src": k1, "dst": k2, "port": k3, "protocol": k4, "count": k5}
-        x = ports.insert_one(dic)
 
 ################################################################## VIRUSTOTAL #################################################################
 @app.route('/vtinfo', methods=['GET'])
@@ -397,6 +278,7 @@ def chd():
         print('No collection name')
         return jsonify({"error": 'No collection name.'}), 200
     colName = request.form['colName']
+    colName = colName.replace(' ', '_')
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))

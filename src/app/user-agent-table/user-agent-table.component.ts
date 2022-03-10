@@ -11,6 +11,7 @@ import { UagentDaoService } from '../uagent-dao.service';
 export class UserAgentTableComponent implements OnInit {
   uagent: UserAgent[] = [];
   rows = Values.rows;
+  loading = true;
 
   constructor(
     private dao: UagentDaoService
@@ -19,6 +20,7 @@ export class UserAgentTableComponent implements OnInit {
   ngOnInit(): void {
     this.dao.get().subscribe((u: any) => {
       this.uagent = u;
+      this.loading = false;
     })
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BeaconDaoService } from '../beacon-dao.service';
 import { Beacon } from '../model/Beacon';
 import { Values } from '../model/Values';
@@ -11,6 +11,7 @@ import { Values } from '../model/Values';
 export class BeaconTableComponent implements OnInit {
   beacons: Beacon[] = [];
   rows = Values.rows;
+  loading = true;
 
   beaconDetails: any;
   details = false;
@@ -45,10 +46,14 @@ export class BeaconTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.beaconDao.get().subscribe((b: any) => {
-      this.beacons = b
-      console.log(b);
-    });
+    // For race condition
+    setTimeout(()=>{
+      this.beacons = [];
+      this.beaconDao.get().subscribe((b: any) => {
+        this.beacons = b
+        this.loading = false;
+      });
+    }, 100)
   }
 
   view(id: string) {

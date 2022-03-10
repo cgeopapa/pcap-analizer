@@ -11,6 +11,7 @@ import { Display } from '../model/Display';
 })
 export class MainTablesComponent implements OnInit {
   display: Display = Display.beacons;
+  collection = "";
 
   menuItems: MenuItem[] = [
     {
@@ -33,11 +34,11 @@ export class MainTablesComponent implements OnInit {
       icon: "pi pi-user",
       command: () => this.display = Display.userAgents,
     },
-    {
-      label: "HTTP Traffic",
-      icon: "pi pi-cloud-upload",
-      command: () => this.display = Display.httpTraffic,
-    }
+    // {
+    //   label: "HTTP Traffic",
+    //   icon: "pi pi-cloud-upload",
+    //   command: () => this.display = Display.httpTraffic,
+    // }
   ]
 
   constructor(
@@ -50,7 +51,8 @@ export class MainTablesComponent implements OnInit {
     this.primengConfig.ripple = true;
 
     this.router.queryParams.subscribe((p: any) => {
-      this.dao.setCollection(p.col);
+      this.collection = p.col;
+      this.dao.setCollection(this.collection);
     })
   }
 }

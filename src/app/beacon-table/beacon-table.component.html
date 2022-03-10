@@ -1,11 +1,11 @@
 <div class="h-screen" style="overflow-y: hidden;">
-    <h2 class="m-2">Beacons</h2>
+    <h2 class="m-2"><i class="pi pi-wifi mr-2"></i>Beacons</h2>
     <div *ngIf="!details; else elseBlock">
         <p-table [value]="beacons" styleClass="p-datatable-striped" responsiveLayout="scroll"
-            [scrollable]="true" selectionMode="single" 
-            [paginator]="true" [rows]="rows" [showCurrentPageReport]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
-            <ng-template pTemplate="header">
+        [scrollable]="true" scrollHeight="calc(100vh - 110px)" selectionMode="single" [loading]="loading"
+        [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [style]="{'height': '100%'}"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="header">
                 <tr>
                     <th pSortableColumn="score">Beacon Score<p-sortIcon field="score"></p-sortIcon></th>
                     <th pSortableColumn="src">Source IP<p-sortIcon field="src"></p-sortIcon></th>
@@ -20,7 +20,10 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
-                No beacons found in this pcap collection
+                <div class="w-full h-20rem flex justify-content-center align-items-center flex-column">
+                    <i class="pi pi-search mb-4" style="font-size: 10rem; opacity: 0.4;"></i>
+                    No beacons found in this pcap collection
+                </div>
             </ng-template>
         </p-table>
     </div>

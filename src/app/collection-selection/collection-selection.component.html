@@ -27,7 +27,7 @@
         <div class="m-4 w-30rem p-fluid">
             <div class="field">
                 <span class="p-float-label mt-2">
-                    <input id="colName" type="text" pInputText [(ngModel)]="colName"> 
+                    <input id="colName" type="text" pInputText [(ngModel)]="colName" (input)="spaceToUnder($event)">
                     <label for="colName">Collection Name</label>
                 </span>
                 <small class="p-error" *ngIf="submitted && !colNameValid">Name is required and MUST be unique.</small>

@@ -1,7 +1,7 @@
 <div class="card">
-    <h2 class="m-2">DNS</h2>
+    <h2 class="m-2"><i class="pi pi-google mr-2"></i>DNS</h2>
     <p-table [value]="dns" styleClass="p-datatable-striped" responsiveLayout="scroll"
-        [scrollable]="true" scrollHeight="calc(100vh - 110px)"
+        [scrollable]="true" scrollHeight="calc(100vh - 110px)" [loading]="loading"
         [paginator]="true" [rows]="rows" [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
         <ng-template pTemplate="header">
@@ -19,7 +19,10 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
-            No DNS records found in this pcap collection
+            <div class="w-full h-20rem flex justify-content-center align-items-center flex-column">
+                <i class="pi pi-search mb-4" style="font-size: 10rem; opacity: 0.4;"></i>
+                No DNS records found in this pcap collection
+            </div>
         </ng-template>
     </p-table>
 </div>

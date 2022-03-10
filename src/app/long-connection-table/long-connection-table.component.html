@@ -1,8 +1,8 @@
 <div class="card">
-    <h2 class="m-2">Long Connections</h2>
+    <h2 class="m-2"><i class="pi pi-globe mr-2"></i>Long Connections</h2>
     <div *ngIf="!details; else elseBlock">
         <p-table [value]="longCon" styleClass="p-datatable-striped" responsiveLayout="scroll"
-            [scrollable]="true" scrollHeight="calc(100vh - 110px)" selectionMode="single"
+            [scrollable]="true" scrollHeight="calc(100vh - 110px)" selectionMode="single" [loading]="loading"
             [paginator]="true" [rows]="rows" [showCurrentPageReport]="true" [style]="{'height': '100%'}"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
             <ng-template pTemplate="header">
@@ -24,7 +24,10 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
-                No long connections found in this pcap collection
+                <div class="w-full h-20rem flex justify-content-center align-items-center flex-column">
+                    <i class="pi pi-search mb-4" style="font-size: 10rem; opacity: 0.4;"></i>
+                    No long connections found in this pcap collection
+                </div>
             </ng-template>
         </p-table>
     </div>
