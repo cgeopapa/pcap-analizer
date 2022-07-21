@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/threat-hunter'),
+      dir: require('path').join(__dirname, './coverage/pcap-analizer'),
       subdir: '.',
       reporters: [
         { type: 'html' },

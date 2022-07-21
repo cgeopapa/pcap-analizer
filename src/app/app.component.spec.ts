@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'threat-hunter'`, () => {
+  it(`should have as title 'pcap-analizer'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('threat-hunter');
+    expect(app.title).toEqual('pcap-analizer');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('threat-hunter app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('pcap-analizer app is running!');
   });
 });

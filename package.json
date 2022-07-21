@@ -1,11 +1,11 @@
 {
-  "name": "threat-hunter",
+  "name": "pcap-analizer",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
     "start-backend": "python3 final.py",
-    "build": "ng build --configuration production --build-optimizer --baseHref=. && sudo scp -r ./dist/threat-hunter/*  ubuntu@192.168.105.105:~/scp/",
+    "build": "ng build --configuration production --build-optimizer --baseHref=. && sudo scp -r ./dist/pcap-analizer/*  ubuntu@192.168.105.105:~/scp/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

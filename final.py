@@ -16,11 +16,11 @@ from pymongo import MongoClient
 
 app = Flask(__name__, static_url_path="/")
 
-UPLOAD_FOLDER = '/home/ubuntu/threat-hunter/uploads'
+UPLOAD_FOLDER = ''
 app.secret_key = None
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = set(['pcap'])
-mongo_ip = '192.168.105.105'
+mongo_ip = ''
 
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
